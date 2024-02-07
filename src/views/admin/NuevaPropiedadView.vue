@@ -1,14 +1,18 @@
 <script setup>
+  import { ref } from 'vue'
   import { useForm, useField } from 'vee-validate'
   import { collection, addDoc } from 'firebase/firestore'
   import { useFirestore } from 'vuefire'
   import { useRouter } from 'vue-router'
   import { validationSchema, imageSchema } from '@/validation/propiedadSchema'
   import useImage from '@/composables/useImage'
-  
+  import 'leaflet/dist/leaflet.css'
+  import { LMap, LTileLayer } from '@vue-leaflet/vue-leaflet'
+
+  const zoom = ref(15)
   const items = [1,2,3,4,5]
 
-const { url, uploadImage, image } = useImage()
+  const { url, uploadImage, image } = useImage()
 
   const router = useRouter()
   const db = useFirestore()
@@ -150,6 +154,16 @@ const { url, uploadImage, image } = useImage()
         v-model="alberca.value.value"
         :error-messages="alberca.errorMessage.value"
       />  
+
+      <div style="height:600px; width:800px">
+        <l-map ref="map" v-model:zoom="zoom" :center="[47.41322, -1.219482]" :use-global-leaflet="false">
+          <l-tile-layer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            layer-type="base"
+            name="OpenStreetMap"
+          ></l-tile-layer>
+        </l-map>
+      </div>
 
       <v-btn
         color="pink-accent-3"
