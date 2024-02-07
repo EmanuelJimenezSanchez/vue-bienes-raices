@@ -8,7 +8,7 @@
   
   const items = [1,2,3,4,5]
 
-const { uploadImage } = useImage()
+const { url, uploadImage, image } = useImage()
 
   const router = useRouter()
   const db = useFirestore()
@@ -35,7 +35,8 @@ const { uploadImage } = useImage()
     const { imagen, ...propiedad } = values
     
     const docRef = await addDoc(collection(db, 'propiedades'), {
-      ...propiedad
+      ...propiedad,
+      imagen: url.value
     })
 
     if(docRef.id) {
@@ -80,6 +81,12 @@ const { uploadImage } = useImage()
         :error-messages="imagen.errorMessage.value"
         @change="uploadImage"
       />
+
+      <div v-if="image" class="my-5">
+        <p class="font-weight-bold">Imagen Propiedad:</p>
+
+        <img class="w-50" :src="image" />
+      </div>
 
       <v-text-field
         class="mb-5"
