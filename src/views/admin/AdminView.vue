@@ -22,9 +22,16 @@
         :key="propiedad.id"
       >
         <template v-slot:prepend>
-          <v-list-item-media :start="true">
-            <img width="180" :src="propiedad.imagen" />
+          <v-list-item-media :start="true" >
+            <!-- <img width="180" :src="propiedad.imagen" :aspect-ratio="4 / 3"/> -->
+            <v-img
+              :width="180"
+              aspect-ratio="3/2"
+              cover
+              :src="propiedad.imagen"
+            ></v-img>
           </v-list-item-media>
+  
         </template>
 
         <v-list-item-title>{{ propiedad.titulo }}</v-list-item-title>
@@ -35,6 +42,7 @@
             color="info"
             flat
             class="mr-3"
+            :to="{ name: 'editar-propiedad', params: { id: propiedad.id}}"
           >
             Editar
           </v-btn>
