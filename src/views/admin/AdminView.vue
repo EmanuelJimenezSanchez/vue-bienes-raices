@@ -2,7 +2,7 @@
   import usePropiedades from '@/composables/usePropiedades'
   import { propertyPrice } from '@/helpers'
 
-  const { propiedadesCollection } = usePropiedades()
+  const { propiedadesCollection, deleteItem } = usePropiedades()
 </script>
 
 <template>
@@ -51,6 +51,7 @@
           <v-btn
             color="red-darken-3"
             flat
+            @click="deleteItem(propiedad.id)"
           >
             Eliminar
           </v-btn>
