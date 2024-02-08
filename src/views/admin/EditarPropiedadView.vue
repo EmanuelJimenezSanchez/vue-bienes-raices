@@ -1,6 +1,6 @@
 <script setup>
   import { watch } from 'vue'
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { useFirestore, useDocument } from 'vuefire'
   import { doc, updateDoc } from 'firebase/firestore'
   import { useField, useForm } from 'vee-validate'
@@ -13,6 +13,7 @@
   import useImage from '@/composables/useImage'
   import useLocationMap from '@/composables/useLocationMap'
   import { validationSchema } from '@/validation/propiedadSchema'
+import { useDeviceLanguage } from 'firebase/auth'
 
   const items = [1,2,3,4,5]
 
@@ -31,6 +32,7 @@
   const alberca = useField('alberca')
 
   const route = useRoute()
+  const router = useRouter()
 
   // Obtener la Propiedad a editar
   const db = useFirestore()
@@ -48,8 +50,28 @@
     center.value = propiedad.ubicacion
   })
 
-  const submit = handleSubmit( values => {
+  const submit = handleSubmit( async values => {
+
+    const { imagen, ...propiedad } = values
     
+    if (image.value) {
+      const data = {
+        ...propiedad,
+        imagen: url.value,
+        ubicacion: center.value
+      }
+
+      await updateDoc(docRef, data)
+    } else {
+      const data = {
+        ...propiedad,
+        ubicacion: center.value
+      }
+
+      await updateDoc(docRef, data)
+    }
+
+    router.push({ name: 'admin-propiedades' })
   })
 </script>
 
@@ -82,6 +104,18 @@
 
       <div class="my-5">
         <p class="font-weight-bold">Imagen Actual:</p>
+
+        <img
+          v-if="image" 
+          :src="image" 
+          class="w-50"  
+        >
+
+        <img 
+          v-else
+          :src="propiedad?.imagen" 
+          class="w-50"  
+        >
       </div>
 
 
