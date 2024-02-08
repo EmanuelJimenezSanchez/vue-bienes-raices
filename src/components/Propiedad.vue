@@ -29,7 +29,7 @@
         {{ propiedad.descripcion }}
       </v-card-text>
 
-      <v-card-text class="text-h5 font-weight-bold">
+      <v-card-text class="text-h6 font-weight-bold">
         Precio: {{ price( propiedad.precio ) }}
       </v-card-text>
 
@@ -38,6 +38,7 @@
           block
           color="info"
           variant="flat"
+          :to="{ name: 'propiedad', params: { id: propiedad.id } }"
         >
           Ver Información
         </v-btn>
